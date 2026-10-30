@@ -11,5 +11,13 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     chrome.action.setBadgeText({
       text: `${time + 1}`,
     });
+    if (time % 3600 == 0) {
+      this.registration.showNotification("Chrome Timer Notification", {
+        body: "1 hour has passed",
+        icon: "icon.png",
+      });
+    }
   });
 });
+
+console.log(this);
