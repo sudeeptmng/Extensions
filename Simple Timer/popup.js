@@ -12,5 +12,6 @@ chrome.action.setBadgeText(
   },
 );
 chrome.storage.sync.get(["name"], (res) => {
-  nameElement.textContent = `Welcome!! ${res.name}`;
+  const name = res.name ?? "User";
+  nameElement.textContent = `Welcome!! ${name}`;
 });
