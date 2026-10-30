@@ -1,0 +1,12 @@
+body {
+  height: 400px;
+  width: 400px;
+}
+h1 {
+  color: teal;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
