@@ -1,7 +1,17 @@
 console.log("Hello!! This is Options page");
-const name = document.getElementById("name");
+const nameInput = document.getElementById("name-input");
 const submit = document.getElementById("submit");
 
 submit.addEventListener("click", () => {
-  console.log("Welcome", name.value);
+  const name = nameInput.value;
+  chrome.storage.sync.set(
+    {
+      name,
+    },
+    () => console.log("Hello!! Name is now set to ", name),
+  );
+});
+
+chrome.storage.sync.get(["name"], (res) => {
+  nameInput.value = res.name;
 });
