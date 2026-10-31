@@ -1,12 +1,15 @@
 body {
   height: 400px;
   width: 400px;
+  text-align: center;
 }
 h1 {
   color: teal;
 }
 
-h1,
-h2 {
-  text-align: center;
+#start,
+#stop,
+#reset {
+  padding: 8px 16px;
+  margin: 4px;
 }
