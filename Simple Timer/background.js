@@ -18,6 +18,9 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
     chrome.storage.sync.get(["notificationTime"], (res) => {
       const notificationTime = res.notificationTime ?? 3600;
+      if (time == 0) {
+        return;
+      }
       if (time % notificationTime == 0) {
         this.registration.showNotification("Chrome Timer Notification", {
           body: `${notificationTime} seconds has passed`,
