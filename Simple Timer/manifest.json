@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Simple Timer",
   "version": "1.0.0",
-  "description": "This is a Simple Timer which shows your cuurent local time",
+  "description": "This Simple Timer shows your curent local time and has a timer which tracks your total chrome usage time(automatically resets the next day)",
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
