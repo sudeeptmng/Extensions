@@ -3,9 +3,21 @@ chrome.alarms.create({
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
-  chrome.storage.local.get(["timer", "isRunning"], (res) => {
+  chrome.storage.local.get(["timer", "isRunning", "lastResetDate"], (res) => {
+    const today = new Date().toDateString();
     const time = res.timer ?? 0;
     const isRunning = res.isRunning ?? true;
+
+    if (res.lastResetDate !== today) {
+      chrome.storage.local.set({
+        timer: 0,
+        lastResetDate: today,
+      });
+      chrome.action.setBadgeText({
+        text: "0",
+      });
+      return;
+    }
     if (!isRunning) {
       return;
     }
@@ -30,5 +42,3 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     });
   });
 });
-
-console.log(this);
