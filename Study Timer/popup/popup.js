@@ -15,6 +15,10 @@ updateTime();
 setInterval(updateTime, 1000);
 
 const startTimerBtn = document.getElementById("start-timer-btn");
+chrome.storage.local.get(["isRunning"], (res) => {
+  startTimerBtn.textContent = res.isRunning ? "Pause Timer" : "Start Timer";
+});
+
 startTimerBtn.addEventListener("click", () => {
   chrome.storage.local.get(["isRunning"], (res) => {
     chrome.storage.local.set(
