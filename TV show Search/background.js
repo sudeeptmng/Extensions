@@ -1,24 +1,20 @@
 chrome.runtime.onInstalled.addListener((details) => {
+  chrome.storage.local.set({
+    shows: [],
+  });
   chrome.contextMenus.create({
-    title: "Text Context Menu",
+    title: "Search TV Show",
     id: "contextMenu1",
     contexts: ["page", "selection"],
   });
-  chrome.contextMenus.onClicked.addListener((event) => {
-    console.log(event);
-  });
-  chrome.contextMenus.create({
-    title: "Text Context Menu 1",
-    id: "contextMenu2",
-    parentId: "contextMenu1",
-    contexts: ["page", "selection"],
-  });
-  chrome.contextMenus.create({
-    title: "Text Context Menu 2",
-    id: "contextMenu3",
-    parentId: "contextMenu1",
-    contexts: ["page", "selection"],
-  });
 });
-
-console.log("background script running");
+chrome.contextMenus.onClicked.addListener((event) => {
+  fetch(`https://api.tvmaze.com/search/shows?q=${event.selectionText}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      chrome.storage.local.set({
+        shows: data,
+      });
+    });
+});
