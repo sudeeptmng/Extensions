@@ -13,8 +13,13 @@ chrome.contextMenus.onClicked.addListener((event) => {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      chrome.storage.local.set({
-        shows: data,
-      });
+      chrome.storage.local.set(
+        {
+          shows: data,
+        },
+        () => {
+          chrome.action.openPopup();
+        },
+      );
     });
 });
