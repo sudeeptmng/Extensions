@@ -1,0 +1,36 @@
+const WEATHER_API_KEY = "d2a60f0c90528fb9b5f8128c0129009b"
+
+export interface OpenWeatherData {
+  name: string
+  main: {
+    feels_like: number
+    humidity: number
+    pressure: number
+    temp: number
+    temp_max: number
+    temp_min: number
+  }
+  weather: {
+    description: string
+    icon: string
+    id: number
+    main: string
+  }[]
+  wind: {
+    deg: number
+    speed: number
+  }
+}
+
+export async function fetchWeatherData(city: string): Promise<OpenWeatherData> {
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&limit=1&units=metric&appid=${WEATHER_API_KEY}`,
+  )
+
+  if (!res.ok) {
+    throw new Error("City not found")
+  }
+
+  const data: OpenWeatherData = await res.json()
+  return data
+}

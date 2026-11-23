@@ -60,7 +60,7 @@ function getHtmlPlugins(chunks) {
   return chunks.map(
     (chunk) =>
       new HtmlPlugin({
-        title: "Webpack Extension",
+        title: "Weather Extension",
         filename: `${chunk}.html`,
         chunks: [chunk],
       }),
