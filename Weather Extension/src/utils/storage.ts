@@ -1,5 +1,12 @@
+import { OpenWeatherTempScale } from "./api"
+
 export interface LocalStorage {
-  cities: string[]
+  cities?: string[]
+  options?: LocalStorageOtions
+}
+
+export interface LocalStorageOtions {
+  tempScale: OpenWeatherTempScale
 }
 
 export type LocalStorageKeys = keyof LocalStorage
@@ -25,5 +32,25 @@ export function getStoredCities(): Promise<string[]> {
     chrome.storage.local.get(keys, (res: LocalStorage) => {
       resolve(res.cities ?? [])
     })
+  })
+}
+
+export function setStoredOptions(options: LocalStorageOtions): Promise<void> {
+  const vals: LocalStorage = {
+    options,
+  }
+  return new Promise((resolve) => {
+    chrome.storage.local.set(vals, () => {
+      resolve()
+    })
+  })
+}
+
+export function getStoredOptions(): Promise<LocalStorageOtions> {
+  const keys: LocalStorageKeys[] = ["options"]
+  return new Promise((resolve) => {
+    chrome.storage.local.get(keys, (res: LocalStorage) => [
+      resolve(res.options ?? { tempScale: "metric" }),
+    ])
   })
 }

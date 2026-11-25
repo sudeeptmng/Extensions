@@ -6,16 +6,25 @@ import "@fontsource/roboto"
 import WeatherCard from "./WeatherCard"
 import { Box, IconButton, Paper, InputBase } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
-import { setStoredCities, getStoredCities } from "../utils/storage"
+import {
+  setStoredCities,
+  getStoredCities,
+  setStoredOptions,
+  getStoredOptions,
+  LocalStorageOtions,
+} from "../utils/storage"
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = useState<string[]>([])
+  const [cityInput, setCityInput] = useState<string>("")
+  const [options, setOptions] = useState<LocalStorageOtions | null>(null)
 
   useEffect(() => {
     getStoredCities().then((cities) => setCities(cities))
+    getStoredOptions().then((options) => {
+      setOptions(options)
+    })
   }, [])
-
-  const [cityInput, setCityInput] = useState<string>("")
 
   const handleCityButtonClick = () => {
     if (cityInput === "") {
@@ -29,12 +38,27 @@ const App: React.FC<{}> = () => {
     })
   }
 
+  const handleTempScaleButtonClick = () => {
+    if (!options) return
+    const updateOptions: LocalStorageOtions = {
+      ...options,
+      tempScale: options.tempScale === "metric" ? "imperial" : "metric",
+    }
+    setStoredOptions(updateOptions).then(() => {
+      setOptions(updateOptions)
+    })
+  }
+
   const handleCityDeleteButton = (index: number) => {
     cities.splice(index, 1)
     const updatedCities = [...cities]
     setStoredCities(updatedCities).then(() => {
       setCities(updatedCities)
     })
+  }
+
+  if (!options) {
+    return null
   }
 
   return (
@@ -54,11 +78,22 @@ const App: React.FC<{}> = () => {
           <IconButton onClick={handleCityButtonClick}>
             <AddIcon />
           </IconButton>
+          <IconButton
+            onClick={handleTempScaleButtonClick}
+            sx={{
+              width: "40px",
+              height: "40px",
+              flexShrink: 0,
+            }}
+          >
+            {options.tempScale === "metric" ? "\u2103" : "\u2109"}
+          </IconButton>
         </Box>
       </Paper>
       {cities.map((city, index) => (
         <WeatherCard
           city={city}
+          tempScale={options.tempScale}
           key={index}
           onDelete={() => handleCityDeleteButton(index)}
         />
