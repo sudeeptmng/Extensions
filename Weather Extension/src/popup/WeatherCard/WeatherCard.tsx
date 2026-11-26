@@ -39,7 +39,7 @@ type WeatherCardState = "loading" | "error" | "ready"
 const WeatherCard: React.FC<{
   city: string
   tempScale: OpenWeatherTempScale
-  onDelete: () => void
+  onDelete?: () => void
 }> = ({ city, tempScale, onDelete }) => {
   const [weatherData, setWeatherData] = useState<OpenWeatherData | null>(null)
   const [cardState, setcardState] = useState<WeatherCardState>("loading")
