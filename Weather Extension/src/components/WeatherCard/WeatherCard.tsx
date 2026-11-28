@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import {
   Box,
+  Grid,
   Card,
   CardActions,
   Button,
@@ -9,6 +10,7 @@ import {
 } from "@mui/material"
 import {
   fetchWeatherData,
+  getWeatherIconSrc,
   OpenWeatherData,
   OpenWeatherTempScale,
 } from "../../utils/api"
@@ -19,7 +21,7 @@ const WeatherCardContainer: React.FC<{
   onDelete?: () => void
 }> = ({ children, onDelete }) => {
   return (
-    <Box sx={{ mx: "4px", my: "16px" }}>
+    <Box sx={{ mx: "4px", my: "10px" }}>
       {" "}
       <Card>
         <CardContent>{children}</CardContent>
@@ -69,13 +71,29 @@ const WeatherCard: React.FC<{
   }
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography className="weatherCard-title">{weatherData.name}</Typography>
-      <Typography className="weatherCard-body">
-        {Math.round(weatherData.main.temp)}
-      </Typography>
-      <Typography className="weatherCard-body">
-        Feels like: {Math.round(weatherData.main.feels_like)}
-      </Typography>
+      <Grid container sx={{ justifyContent: "space-around" }}>
+        <Grid>
+          <Typography className="weatherCard-title">
+            {weatherData.name}
+          </Typography>
+          <Typography className="weatherCard-temp">
+            {Math.round(weatherData.main.temp)}
+          </Typography>
+          <Typography className="weatherCard-body">
+            Feels like: {Math.round(weatherData.main.feels_like)}
+          </Typography>
+        </Grid>
+        <Grid>
+          {weatherData.weather.length > 0 && (
+            <>
+              <img src={getWeatherIconSrc(weatherData.weather[0].icon)} />
+              <Typography className="weatherCard-body">
+                {weatherData.weather[0].main}{" "}
+              </Typography>
+            </>
+          )}
+        </Grid>
+      </Grid>
     </WeatherCardContainer>
   )
 }
