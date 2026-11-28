@@ -3,9 +3,10 @@ import ReactDOM from "react-dom/client"
 import "./popup.css"
 import { fetchWeatherData } from "../utils/api"
 import "@fontsource/roboto"
-import WeatherCard from "./WeatherCard"
+import WeatherCard from "../components/WeatherCard"
 import { Box, IconButton, Paper, InputBase } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
+import PictureInPictureIcon from "@mui/icons-material/PictureInPicture"
 import {
   setStoredCities,
   getStoredCities,
@@ -13,6 +14,7 @@ import {
   getStoredOptions,
   LocalStorageOtions,
 } from "../utils/storage"
+import { Messages } from "../utils/messages"
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = useState<string[]>([])
@@ -61,6 +63,15 @@ const App: React.FC<{}> = () => {
     return null
   }
 
+  const handleOverlayButtonClick = () => {
+    chrome.tabs.query({ active: true }, (tabs) => {
+      const tabId = tabs[0]?.id
+      if (tabId !== undefined) {
+        chrome.tabs.sendMessage(tabId, Messages.TOGGLE_OVERLAY)
+      }
+    })
+  }
+
   return (
     <Box sx={{ mx: "8px", my: "16px" }}>
       <Paper>
@@ -87,6 +98,16 @@ const App: React.FC<{}> = () => {
             }}
           >
             {options.tempScale === "metric" ? "\u2103" : "\u2109"}
+          </IconButton>
+          <IconButton
+            onClick={handleOverlayButtonClick}
+            sx={{
+              width: "40px",
+              height: "40px",
+              flexShrink: 0,
+            }}
+          >
+            <PictureInPictureIcon />
           </IconButton>
         </Box>
       </Paper>

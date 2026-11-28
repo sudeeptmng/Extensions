@@ -9,6 +9,7 @@ import {
   Stack,
   Typography,
   styled,
+  Switch,
   Paper,
   Box,
   Button,
@@ -40,6 +41,17 @@ const App: React.FC<{}> = () => {
       return {
         ...prevOptions,
         homeCity,
+      }
+    })
+  }
+
+  const handleAutoOverlayChange = (hasAutoOverlay: boolean) => {
+    setOptions((prevOptions) => {
+      if (!prevOptions) return null
+
+      return {
+        ...prevOptions,
+        hasAutoOverlay,
       }
     })
   }
@@ -78,6 +90,17 @@ const App: React.FC<{}> = () => {
                 placeholder="Enter home city"
                 value={options.homeCity}
                 onChange={(event) => handleHomeCityChange(event.target.value)}
+                disabled={isFieldDisabled}
+              />
+            </Item>
+            <Item>
+              <Typography variant="body1">
+                Auto toggle overlay on website load
+              </Typography>
+              <Switch
+                color="primary"
+                checked={options.hasAutoOverlay}
+                onChange={(event, checked) => handleAutoOverlayChange(checked)}
                 disabled={isFieldDisabled}
               />
             </Item>

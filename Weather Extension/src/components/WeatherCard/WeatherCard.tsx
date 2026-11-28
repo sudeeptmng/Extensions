@@ -12,6 +12,7 @@ import {
   OpenWeatherData,
   OpenWeatherTempScale,
 } from "../../utils/api"
+import "./WeatherCard.css"
 
 const WeatherCardContainer: React.FC<{
   children: React.ReactNode
@@ -25,7 +26,7 @@ const WeatherCardContainer: React.FC<{
         <CardActions>
           {onDelete && (
             <Button color="error" onClick={onDelete}>
-              Delete
+              <Typography className="weatherCard-body">Delete</Typography>
             </Button>
           )}
         </CardActions>
@@ -57,7 +58,8 @@ const WeatherCard: React.FC<{
   if (cardState == "loading" || cardState == "error" || !weatherData) {
     return (
       <WeatherCardContainer onDelete={onDelete}>
-        <Typography variant="body1">
+        <Typography className="weatherCard-title">{city}</Typography>
+        <Typography className="weatherCard-body">
           {cardState == "loading"
             ? "Loading..."
             : "Error: could not retrieve data for this city"}
@@ -67,11 +69,11 @@ const WeatherCard: React.FC<{
   }
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography variant="h5">{weatherData.name}</Typography>
-      <Typography variant="body1">
+      <Typography className="weatherCard-title">{weatherData.name}</Typography>
+      <Typography className="weatherCard-body">
         {Math.round(weatherData.main.temp)}
       </Typography>
-      <Typography variant="body1">
+      <Typography className="weatherCard-body">
         Feels like: {Math.round(weatherData.main.feels_like)}
       </Typography>
     </WeatherCardContainer>
